@@ -1,5 +1,4 @@
 # Grocery-Sales-Pipeline
-================================================================================
                     ETL PIPELINE FOR GROCERY SALES DATA WAREHOUSE
                             Documentation File
 ================================================================================
