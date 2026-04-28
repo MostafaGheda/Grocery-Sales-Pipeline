@@ -1,10 +1,10 @@
 # Grocery-Sales-Pipeline
+
                     ETL PIPELINE FOR GROCERY SALES DATA WAREHOUSE
                             Documentation File
-================================================================================
 
 PROJECT OVERVIEW
-================================================================================
+=================
 
 This project implements a complete ETL (Extract, Transform, Load) pipeline for a 
 grocery sales data warehouse. The pipeline extracts data from a staging database 
@@ -13,9 +13,9 @@ practices, and loads it into a dimensional data warehouse (GrocerySales_DWH).
 The fact table loading process is BATCHED to efficiently handle large volumes 
 of data without memory issues.
 
-================================================================================
+
 ARCHITECTURE
-================================================================================
+=============
 
 [Staging Database] -> [ETL Pipeline] -> [Data Warehouse]
 (GrocerySalesStage)    (Python)         (GrocerySales_DWH)
@@ -43,9 +43,9 @@ Technology Stack:
 - PyODBC - SQL Server driver
 - Microsoft SQL Server - Source and destination databases
 
-================================================================================
+
 DATABASE SCHEMA
-================================================================================
+================
 
 SOURCE TABLES (GrocerySalesStage):
 
@@ -87,9 +87,9 @@ Table: Dim_Products (SCD Type 2)
 Table: Fact_Sales
 - sales_pk, employee_fk, customer_fk, product_fk, city_fk, date_key, time_key, quantity, price, discount, total_sales, transaction_number
 
-================================================================================
+
 ETL PROCESS FLOW
-================================================================================
+=================
 
 PHASE 1: DIMENSION EXTRACTION
 - extract_dim() -> customers_df, employees_df, countries_df, cities_df, products_df, categories_df
@@ -119,9 +119,9 @@ PHASE 5: FACT TRANSFORMATION & LOADING
 - Maps business keys to surrogate keys from dimensions
 - Inserts only new records (avoids duplicates)
 
-================================================================================
+
 SLOWLY CHANGING DIMENSIONS (SCD)
-================================================================================
+=================================
 
 SCD TYPE 1 - OVERWRITE
 Used for: Dim_Customers, Dim_Employees, Dim_Cities
@@ -158,9 +158,8 @@ USING #temp source
 ON target.product_pk = source.product_pk AND target.is_current = 1
 WHEN NOT MATCHED THEN INSERT ...
 
-================================================================================
 BATCHED FACT PROCESSING
-================================================================================
+========================
 
 WHY BATCHING?
 - Memory overflow with millions of rows -> Process in chunks of 50,000-100,000 rows
@@ -190,9 +189,8 @@ WHERE NOT EXISTS (
     WHERE tgt.sales_pk = src.sales_pk
 )
 
-================================================================================
 CONFIGURATION
-================================================================================
+==============
 
 DATABASE CONNECTION:
 Modify the connection parameters in Run_ETL_Pipeline():
@@ -205,9 +203,8 @@ DRIVER CONFIGURATION:
 For Windows: driver='ODBC+Driver+17+for+SQL+Server'
 For Linux/macOS: driver='ODBC+Driver+17+for+SQL+Server' (may need different name)
 
-================================================================================
 USAGE
-================================================================================
+======
 
 RUNNING THE PIPELINE:
 python etl_pipeline.py
@@ -239,13 +236,12 @@ Total inserted so far: 100,000
 
 === Fact Loading Completed: 500,000 total rows inserted ===
 
-=======================================
+
 = ETL Pipeline Completed Successfully =
 =======================================
 
-================================================================================
 EXTENDING THE PIPELINE
-================================================================================
+=======================
 
 ADDING NEW DIMENSIONS:
 
@@ -269,6 +265,6 @@ ADDING NEW FACT TABLES:
 3. Implement chunk transformation
 4. Implement chunk loading with duplicate prevention
 
-================================================================================
+
 END OF DOCUMENTATION
-================================================================================
+=====================
